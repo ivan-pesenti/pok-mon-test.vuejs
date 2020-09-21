@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon test app</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>    
-    
+<body>        
     <div id="app-container">
         <!-- to replace with title component -->
         <div id="title-component">
@@ -32,7 +33,9 @@
     
             <!-- to replace with main component -->
             <div id="main-component">
-                <p>Main component section</p>
+                <div v-for="pokemon in pokemonList">
+                    {{pokemon.name}} - {{pokemon.url}}
+                </div>
             </div>
     
             <!-- to replace with image component -->
