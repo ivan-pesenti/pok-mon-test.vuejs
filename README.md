@@ -1,2 +1,2 @@
-# pok-mon-test-vuejs
+# pokemon-test-vuejs
 A simple VueJS project for learning purposes. 
