@@ -1,0 +1,23 @@
+{
+  "name": "pokemon-test-vuejs",
+  "version": "1.0.0",
+  "description": "A test example application with my Pokémon friends.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivan-pesenti/pokemon-test-vuejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivan-pesenti/pokemon-test-vuejs/issues"
+  },
+  "homepage": "https://github.com/ivan-pesenti/pokemon-test-vuejs#readme",
+  "dependencies": {}
+}

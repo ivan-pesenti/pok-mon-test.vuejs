@@ -2,3 +2,4 @@
 # select fonts from Google fonts.
 # select color palette
 # replace div with components of Vue
+# order by id pokemon displayed

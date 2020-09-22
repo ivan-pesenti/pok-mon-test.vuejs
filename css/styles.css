@@ -7,7 +7,12 @@
 :root {
     --var-dark: #fff;
     --var-light: #fff;
-    --var-grey: #fff;    
+    --var-grey: #fff;  
+    
+    /* pokémon types colors */
+    --fire-clr: #F08030;
+    --grass-clr: #78C850;
+    --water-clr: #6890F0;
 }
 
 body {
@@ -59,7 +64,7 @@ h1 {
 
 #left-side {
     min-height: 600px;
-    width: 25%;
+    width: 20%;
 
     display: flex;
     flex-flow: column nowrap;
@@ -77,7 +82,11 @@ h1 {
 }
 
 #main-component {
-    width: 60%;
+    width: 65%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 1.5em 1.5em 0 1.5em;
 
     /* debug */
     border: 3px solid whitesmoke;
@@ -85,4 +94,30 @@ h1 {
 
 #img-component{
     width: 15%;
+}
+
+/* override bootstrap properties */
+.card {
+    width: 200px;
+    height: fit-content;
+    margin-bottom: 1em;
+    
+    background: linear-gradient(135deg, rgba(240,128,48,1) 55%, rgba(104,144,240,1) 45%);
+}
+
+.card h5 {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.card img {
+}
+
+.card a {
+    margin: 0 auto;
+}
+
+.card-body {
+    display: flex;
+    flex-flow: column wrap;
 }
