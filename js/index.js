@@ -25,6 +25,43 @@ function formatStyles(typesArr) {
     }
 }
 
+// function getPokemonFromApi(offset, take) {
+//     axios
+//         .get('https://pokeapi.co/api/v2/generation/1/')
+//            .then(response => {      
+//                var pokemonListRaw = response.data.pokemon_species.slice(offset, take);                      
+//                 this.pokemonListRaw.forEach(element => {
+//                     axios
+//                         .get(element.url.replace('-species', ''))
+//                         .then(innerResponse => {
+                            
+//                             var pokemonToAdd = new Pokemon();
+//                             pokemonToAdd.id = innerResponse.data.id;
+//                             pokemonToAdd.name = innerResponse.data.name;
+//                             pokemonToAdd.img = innerResponse.data.sprites.front_default;
+//                             pokemonToAdd.types = innerResponse.data.types.map(obj => {
+//                                 return obj.type.name;
+//                             });
+//                             pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
+//                                 return (a > b) ? 1 : -1;
+//                             });
+//                             pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
+
+//                             this.pokemonList.push(pokemonToAdd);
+
+//                             this.pokemonList.sort((a, b) => {
+//                                 return (a.id > b.id) ? 1 : -1;
+//                             });
+//                         })
+//                         .catch(error => console.error(error));
+//                 });
+                
+//            })
+//            .catch(function (error) {
+//             vm.error = 'Could not reach the PokeAPI.co!';
+//            });
+// }
+
 var app = new Vue({
     el: '#main-component',
     data: {
@@ -35,13 +72,12 @@ var app = new Vue({
     },
     mounted: function() {
         axios
-        .get('https://pokeapi.co/api/v2/pokemon/?limit=9&offset=')
+        .get('https://pokeapi.co/api/v2/generation/1/')
            .then(response => {            
-                this.pokemonListRaw = response.data.results;   
-
+                this.pokemonListRaw = response.data.pokemon_species.slice(0, 10);
                 this.pokemonListRaw.forEach(element => {
                     axios
-                        .get(element.url)
+                        .get(element.url.replace('-species', ''))
                         .then(innerResponse => {
                             
                             var pokemonToAdd = new Pokemon();
