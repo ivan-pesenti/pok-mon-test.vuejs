@@ -5,14 +5,17 @@
 
 /* custom general properties */
 :root {
-    --var-dark: #fff;
-    --var-light: #fff;
-    --var-grey: #fff;  
+    --clr-dark: #212121;
+    --clr-light: #fafafa;
+    --clr-grey: #757575;  
     
     /* pokémon types colors */
     --fire-clr: #F08030;
     --grass-clr: #78C850;
     --water-clr: #6890F0;
+    --poison-clr: #A040A0;
+    --flying-clr: #A890F0;
+
 }
 
 body {
@@ -83,10 +86,10 @@ h1 {
 
 #main-component {
     width: 65%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
     padding: 1.5em 1.5em 0 1.5em;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 
     /* debug */
     border: 3px solid whitesmoke;
@@ -96,25 +99,52 @@ h1 {
     width: 15%;
 }
 
+.card-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
 /* override bootstrap properties */
 .card {
     width: 200px;
     height: fit-content;
     margin-bottom: 1em;
-    
-    background: linear-gradient(135deg, rgba(240,128,48,1) 55%, rgba(104,144,240,1) 45%);
+    border: 2px solid var(--clr-dark);
+    margin-right: 1.5em;
+
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 }
 
 .card h5 {
     text-transform: uppercase;
     text-align: center;
+
+    color: var(--clr-dark);
+    /* background-color: var(--clr-light); */
 }
 
 .card img {
+    width: 150px;
+    border-radius: 100px;
+    /* border: 1px solid var(--clr-dark); */
+    margin-top: 1em;
+
+    background-color: var(--clr-grey);
 }
 
 .card a {
     margin: 0 auto;
+
+    color: var(--clr-light);
+    background-color: var(--clr-grey);
+    border: none;
+}
+
+.card a:hover {
+    background-color: var(--clr-dark);
 }
 
 .card-body {
