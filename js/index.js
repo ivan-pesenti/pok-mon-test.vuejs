@@ -28,11 +28,21 @@ function formatStyles(typesArr) {
 function getPokemonFromApi(pokemonListByGeneration, offset, take) {  
     var pokemonList = [];
 
-    pokemonListByGeneration.sort((a, b) => {
-        return (a.url > b.url) ? 1 : -1;
+    // add id property to the pokémon for sorting purpose
+    pokemonListByGeneration.forEach(element => {
+        element.url = element.url.slice(0, -1);
+        element.id = parseInt(element.url.substring(element.url.lastIndexOf("/") + 1));
     });
 
-    pokemonListByGeneration.slice(offset, offset + take).forEach(element => {
+    pokemonListByGeneration.sort((a, b) => {
+        return (a.id > b.id) ? 1 : -1;
+    });
+
+    var arrayTmp = pokemonListByGeneration.slice(offset, offset + take);
+
+    // console.log(arrayTmp); // it works
+
+    arrayTmp.forEach(element => {
         axios
             .get(element.url.replace('-species', ''))
             .then(innerResponse => {
@@ -49,19 +59,24 @@ function getPokemonFromApi(pokemonListByGeneration, offset, take) {
                 });
                 pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
 
-                pokemonList.push(pokemonToAdd);
+                console.log(pokemonToAdd);
 
+                pokemonList.push(pokemonToAdd);
                 
             })
-            .catch(error => console.error(error));           
-            
-        });
-
-        pokemonList.sort((a, b) => {
-            return (a.id > b.id) ? 1 : -1;
+            .catch(error => console.error(error));                       
         });
         
+        setTimeout(function() {alert('paused')}, 5000);
+        pokemonList = pokemonList.sort((a, b) => {
+            return (a.id > b.id) ? 1 : -1;
+        })
+    
         return pokemonList;
+    }
+    
+function getPokemonFromApiByType(pokemonListByGeneration, offset, take, type) {
+    
 }
 
 function getPokemonById(id){
@@ -76,7 +91,6 @@ function getPokemonById(id){
         })
         .catch((error) => console.error(error));
 
-        console.log(pokemon);
         return pokemon;
 }
 
@@ -95,6 +109,10 @@ var app = new Vue({
             isNextBtnDisabled: false,
             totalPages: 0,
             currentPage: 1
+        },
+        filterObject: {
+            selectedType: '',
+            types: []
         }
     },
     mounted: function() {
@@ -112,6 +130,16 @@ var app = new Vue({
            .catch(function (error) {
             vm.error = 'Could not reach the PokeAPI.co!';
            });
+        
+        axios
+            .get('https://pokeapi.co/api/v2/type/')
+            .then(response => {
+                this.filterObject.types = response.data.results.map(obj => {
+                    return obj.name;
+                });
+            })
+            .catch(error => console.error(error));
+           
     },
     methods: {
         nextPage: function () {

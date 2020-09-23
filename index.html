@@ -23,7 +23,30 @@
             <div id="left-side">
                 <!-- to replace with filter component -->
                 <div id="filter-component">
-                    <p>Filter section</p>
+                    <form>
+                        <!-- <label for="filterByName">Search by name:</label>
+                        <input type="text" name="filterByName" id="filterByName" placeholder="Type the name..."> -->
+
+                        <div>
+                            <label for="filterByType"><h3>Search by type:</h3></label>
+                            <!-- <div>
+                                <select name="filterByType" id="filterByType" multiple>
+                                    <option v-for="type in types" value="type">{{type}}</option>
+                                </select>
+                            </div> -->
+
+                            <div>
+                                <select v-model="filterObject.selectedType" name="filterByType" id="filterByType">
+                                    <option value="" disabled>Please select one</option>
+                                    <option v-for="type in filterObject.types" value="type">{{type}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary">Search!</button>
+                        </div>
+                    </form>
                 </div>
         
                 <!-- to replace with selected-item-component -->
@@ -42,7 +65,7 @@
             <!-- to replace with main component -->
             <div id="main-component">
                 <div class="card-container">
-                    <div class="card" v-for="pokemon in pokemonList" v-bind:style="pokemon.backgroundStyles">
+                    <div class="card" v-for="pokemon in pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
                         <img :src="pokemon.img" :alt="'image of ' + pokemon.name" class="card-img-top">                    
                         <div class="card-body">
                             <h5 class="card-title">
