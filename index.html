@@ -48,15 +48,17 @@
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li class="page-item">
+                      <li>
                         <button class="page-link" href="#" aria-label="Previous" @click="previousPage" :disabled="pagingObject.isPreviousBtnDisabled">
                           <span aria-hidden="true">&laquo;</span>
                         </button>
                       </li>
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item">
+                      <li v-for="n in pagingObject.totalPages" @click="goToPage(n)">
+                          <a class="page-link" href="#" :class="{active: (n === pagingObject.currentPage)}">
+                             {{ n }} 
+                          </a>
+                      </li>                      
+                      <li>
                         <button class="page-link" href="#" aria-label="Next" @click="nextPage" :disabled="pagingObject.isNextBtnDisabled">
                           <span aria-hidden="true">&raquo;</span>
                         </button>

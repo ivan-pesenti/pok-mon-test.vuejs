@@ -94,6 +94,9 @@ h1 {
 
 #selected-item-component {
     min-height: 40%;
+
+    /* debug */
+    background-color: salmon;
 }
 
 #main-component {
@@ -115,6 +118,7 @@ h1 {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
+    min-height: 600px;
 }
 
 /* override bootstrap properties */
@@ -162,4 +166,18 @@ h1 {
 .card-body {
     display: flex;
     flex-flow: column wrap;
+}
+
+.page-link {
+    color: var(--clr-light);
+    background-color: var(--clr-grey);
+}
+
+.page-link:hover {
+    color: var(--clr-dark);
+}
+
+li a.active {
+    color: var(--clr-dark);
+    background-color: var(--clr-light);
 }

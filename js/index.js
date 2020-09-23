@@ -75,7 +75,9 @@ var app = new Vue({
             itemsPerPage: 10,
             offset: 0,
             isPreviousBtnDisabled: true,
-            isNextBtnDisabled: false
+            isNextBtnDisabled: false,
+            totalPages: 0,
+            currentPage: 1
         }
     },
     mounted: function() {
@@ -83,6 +85,9 @@ var app = new Vue({
         .get('https://pokeapi.co/api/v2/generation/1/')
            .then(response => {            
                 this.pokemonListRaw = response.data.pokemon_species;  
+
+                // initialize pagingObject with values about page
+                this.pagingObject.totalPages = Math.round(this.pokemonListRaw.length / this.pagingObject.itemsPerPage + 1);
                 
                 // place the call with default values in order to get some initial content
                 this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
@@ -95,6 +100,7 @@ var app = new Vue({
         nextPage: function () {
             this.pagingObject.isPreviousBtnDisabled = false;
             this.pagingObject.offset += this.pagingObject.itemsPerPage;
+            this.pagingObject.currentPage++;
             this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
 
             if ((this.pokemonListRaw.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
@@ -103,8 +109,23 @@ var app = new Vue({
         },
         previousPage: function () {
             this.pagingObject.isNextBtnDisabled = false;
-            this.pagingObject.offset -= this.pagingObject.itemsPerPage;                
+            this.pagingObject.offset -= this.pagingObject.itemsPerPage;  
+            this.pagingObject.currentPage--;              
             this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+
+            if (this.pagingObject.offset < this.pagingObject.itemsPerPage) {
+                this.pagingObject.isPreviousBtnDisabled = true;
+            }
+        },
+        goToPage: function (n) {
+            this.pagingObject.offset = (n-1) * this.pagingObject.itemsPerPage;
+            this.pagingObject.currentPage = n;
+            this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+
+            // check if we have to disabled the previuos or the next button
+            if ((this.pokemonListRaw.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
+                this.pagingObject.isNextBtnDisabled = true;
+            }
 
             if (this.pagingObject.offset < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isPreviousBtnDisabled = true;
