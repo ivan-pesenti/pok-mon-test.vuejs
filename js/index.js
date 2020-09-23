@@ -94,17 +94,21 @@ var app = new Vue({
     methods: {
         nextPage: function () {
             this.pagingObject.isPreviousBtnDisabled = false;
+            this.pagingObject.offset += this.pagingObject.itemsPerPage;
             this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+
             if ((this.pokemonListRaw.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isNextBtnDisabled = true;
             }
-            else {
-                this.pagingObject.offset += this.pagingObject.itemsPerPage;
-            }
         },
         previousPage: function () {
-            this.pagingObject.offset -= this.pagingObject.itemsPerPage;
+            this.pagingObject.isNextBtnDisabled = false;
+            this.pagingObject.offset -= this.pagingObject.itemsPerPage;                
             this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+
+            if (this.pagingObject.offset < this.pagingObject.itemsPerPage) {
+                this.pagingObject.isPreviousBtnDisabled = true;
+            }
         }
     }    
 });
