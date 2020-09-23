@@ -28,7 +28,14 @@
         
                 <!-- to replace with selected-item-component -->
                 <div id="selected-item-component">
-                    <p>Selected item section</p>
+                    <div v-if="selectedPokemon != null">
+                        <h3>Your Pokémon is:</h3>
+                        <h5><strong>{{selectedPokemon.name}}</strong></h5>
+                        <img :src="selectedPokemon.img" :alt="'img of ' + selectedPokemon.name">
+                    </div>
+                    <div v-else>
+                        <h3>select a pokemon!</h3>
+                    </div>
                 </div>
             </div>
     
@@ -41,7 +48,7 @@
                             <h5 class="card-title">
                                 <strong>{{pokemon.name}}</strong>
                             </h5>
-                            <a href="#" class="btn btn-primary">Select</a>
+                            <a href="#" class="btn btn-primary" @click="selectPokemon(pokemon.id)">Select</a>
                         </div>
                     </div>
                 </div>

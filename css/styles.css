@@ -89,14 +89,27 @@ h1 {
 }
 
 #filter-component {
-    min-height: 60%;
+    min-height: 65%;
 }
 
 #selected-item-component {
-    min-height: 40%;
+    min-height: 35%;
 
     /* debug */
     background-color: salmon;
+}
+
+#selected-item-component * {
+    text-align: center;
+}
+
+#selected-item-component h5 {
+    text-transform: uppercase;
+}
+
+#selected-item-component img {
+    width: 120px;
+    height: 120px;
 }
 
 #main-component {
@@ -109,6 +122,7 @@ h1 {
     /* debug */
     border: 3px solid whitesmoke;
 }
+
 
 #img-component{
     width: 15%;

@@ -64,11 +64,28 @@ function getPokemonFromApi(pokemonListByGeneration, offset, take) {
         return pokemonList;
 }
 
+function getPokemonById(id){
+    var pokemon = new Pokemon();
+    axios
+        .get('https://pokeapi.co/api/v2/pokemon/' + id)
+        .then((response) => {
+            pokemon.id = id;
+            pokemon.name = response.data.name;
+            pokemon.img = response.data.sprites.versions["generation-v"]["black-white"].animated.front_default;
+
+        })
+        .catch((error) => console.error(error));
+
+        console.log(pokemon);
+        return pokemon;
+}
+
 var app = new Vue({
-    el: '#main-component',
+    el: '#app-container',
     data: {
         pokemonListRaw: null,
         pokemonList: [],
+        selectedPokemon: null,
         count: 0,
         error: '',
         pagingObject: {
@@ -130,6 +147,9 @@ var app = new Vue({
             if (this.pagingObject.offset < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isPreviousBtnDisabled = true;
             }
+        },
+        selectPokemon: function (id) {
+            this.selectedPokemon = getPokemonById(id);
         }
     }    
 });
