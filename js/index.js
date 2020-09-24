@@ -25,14 +25,8 @@ function formatStyles(typesArr) {
     }
 }
 
-function getPokemonFromApi(pokemonListByGeneration, offset, take) {  
+async function getPokemonFromApi(pokemonListByGeneration, offset, take) {  
     var pokemonList = [];
-
-    // add id property to the pokémon for sorting purpose
-    pokemonListByGeneration.forEach(element => {
-        element.url = element.url.slice(0, -1);
-        element.id = parseInt(element.url.substring(element.url.lastIndexOf("/") + 1));
-    });
 
     pokemonListByGeneration.sort((a, b) => {
         return (a.id > b.id) ? 1 : -1;
@@ -40,46 +34,37 @@ function getPokemonFromApi(pokemonListByGeneration, offset, take) {
 
     var arrayTmp = pokemonListByGeneration.slice(offset, offset + take);
 
-    // console.log(arrayTmp); // it works
+    for (let index = 0; index < arrayTmp.length; index++) {
+        const element = arrayTmp[index];
 
-    arrayTmp.forEach(element => {
-        axios
-            .get(element.url.replace('-species', ''))
-            .then(innerResponse => {
-                
-                var pokemonToAdd = new Pokemon();
-                pokemonToAdd.id = innerResponse.data.id;
-                pokemonToAdd.name = innerResponse.data.name;
-                pokemonToAdd.img = innerResponse.data.sprites.front_default;
-                pokemonToAdd.types = innerResponse.data.types.map(obj => {
-                    return obj.type.name;
-                });
-                pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
-                    return (a > b) ? 1 : -1;
-                });
-                pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
+        await axios
+                .get(element.url.replace('-species', ''))
+                .then(innerResponse => {
+                    var pokemonToAdd = new Pokemon();
+                    pokemonToAdd.id = innerResponse.data.id;
+                    pokemonToAdd.name = innerResponse.data.name;
+                    pokemonToAdd.img = innerResponse.data.sprites.front_default;
+                    pokemonToAdd.types = innerResponse.data.types.map(obj => {
+                        return obj.type.name;
+                    });
+                    pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
+                        return (a > b) ? 1 : -1;
+                    });
+                    pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
 
-                console.log(pokemonToAdd);
-
-                pokemonList.push(pokemonToAdd);
-                
-            })
-            .catch(error => console.error(error));                       
-        });
-        
-        setTimeout(function() {alert('paused')}, 5000);
-        pokemonList = pokemonList.sort((a, b) => {
-            return (a.id > b.id) ? 1 : -1;
-        })
+                    pokemonList.push(pokemonToAdd);
+                })
+                .catch(error => console.error(error));        
+    }   
     
-        return pokemonList;
-    }
+    return pokemonList;
+}
     
 function getPokemonFromApiByType(pokemonListByGeneration, offset, take, type) {
     
 }
 
-function getPokemonById(id){
+async function getPokemonById(id){
     var pokemon = new Pokemon();
     axios
         .get('https://pokeapi.co/api/v2/pokemon/' + id)
@@ -121,16 +106,28 @@ var app = new Vue({
            .then(response => {            
                 this.pokemonListRaw = response.data.pokemon_species;  
 
+                // add id property to the pokémon for sorting purpose
+                this.pokemonListRaw.forEach(element => {
+                    element.url = element.url.slice(0, -1);
+                    element.id = parseInt(element.url.substring(element.url.lastIndexOf("/") + 1));
+                });
+
                 // initialize pagingObject with values about page
                 this.pagingObject.totalPages = Math.round(this.pokemonListRaw.length / this.pagingObject.itemsPerPage + 1);
                 
                 // place the call with default values in order to get some initial content
-                this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
-           })
-           .catch(function (error) {
-            vm.error = 'Could not reach the PokeAPI.co!';
-           });
-        
+                getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage)
+                    .then(result => {
+                        this.pokemonList = result;
+                    })
+                    .catch(error => console.error(error));  
+
+            })
+            .catch(function (error) {
+                vm.error = 'Could not reach the PokeAPI.co!';
+            });
+            
+
         axios
             .get('https://pokeapi.co/api/v2/type/')
             .then(response => {
@@ -145,8 +142,12 @@ var app = new Vue({
         nextPage: function () {
             this.pagingObject.isPreviousBtnDisabled = false;
             this.pagingObject.offset += this.pagingObject.itemsPerPage;
-            this.pagingObject.currentPage++;
-            this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+            this.pagingObject.currentPage++;   
+            getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage)
+                .then(result => {
+                    this.pokemonList = result;
+                })
+                .catch(error => console.error(error));
 
             if ((this.pokemonListRaw.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isNextBtnDisabled = true;
@@ -155,8 +156,12 @@ var app = new Vue({
         previousPage: function () {
             this.pagingObject.isNextBtnDisabled = false;
             this.pagingObject.offset -= this.pagingObject.itemsPerPage;  
-            this.pagingObject.currentPage--;              
-            this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+            this.pagingObject.currentPage--;   
+            getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage)
+                .then(result => {
+                    this.pokemonList = result;
+                })
+                .catch(error => console.error(error));
 
             if (this.pagingObject.offset < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isPreviousBtnDisabled = true;
@@ -164,8 +169,12 @@ var app = new Vue({
         },
         goToPage: function (n) {
             this.pagingObject.offset = (n-1) * this.pagingObject.itemsPerPage;
-            this.pagingObject.currentPage = n;
-            this.pokemonList = getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+            this.pagingObject.currentPage = n;   
+            getPokemonFromApi(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage)
+                .then(result => {
+                    this.pokemonList = result;
+                })
+                .catch(error => console.error(error));
 
             // check if we have to disabled the previuos or the next button
             if ((this.pokemonListRaw.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
