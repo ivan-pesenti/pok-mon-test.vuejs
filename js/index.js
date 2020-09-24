@@ -50,9 +50,11 @@ async function getPokemonFromApi(pokemonListByGeneration, offset, take) {
                     pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
                         return (a > b) ? 1 : -1;
                     });
+
                     pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
 
                     pokemonList.push(pokemonToAdd);
+
                 })
                 .catch(error => console.error(error));        
     }   
@@ -60,8 +62,41 @@ async function getPokemonFromApi(pokemonListByGeneration, offset, take) {
     return pokemonList;
 }
     
-function getPokemonFromApiByType(pokemonListByGeneration, offset, take, type) {
+async function getPokemonFromApiByType(pokemonListByGeneration, offset, take, type) {
+    var pokemonList = [];
+
+    pokemonListByGeneration.sort((a, b) => {
+        return (a.id > b.id) ? 1 : -1;
+    });
+
+    for (let index = 0; index < pokemonListByGeneration.length; index++) {
+        const element = pokemonListByGeneration[index];
+
+        await axios
+                .get(element.url.replace('-species', ''))
+                .then(innerResponse => {
+                    var pokemonToAdd = new Pokemon();
+                    pokemonToAdd.id = innerResponse.data.id;
+                    pokemonToAdd.name = innerResponse.data.name;
+                    pokemonToAdd.img = innerResponse.data.sprites.front_default;
+                    pokemonToAdd.types = innerResponse.data.types.map(obj => {
+                        return obj.type.name;
+                    });
+                    pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
+                        return (a > b) ? 1 : -1;
+                    });
+
+                    pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
+
+                    // surround it with if/else statement
+                    if (pokemonToAdd.types.includes(type)) {
+                        pokemonList.push(pokemonToAdd);                        
+                    }
+                })
+                .catch(error => console.error(error)); 
+    }
     
+    return pokemonList.slice(offset, offset + take);
 }
 
 async function getPokemonById(id){
@@ -124,7 +159,7 @@ var app = new Vue({
 
             })
             .catch(function (error) {
-                vm.error = 'Could not reach the PokeAPI.co!';
+                vm.error = error + 'Could not reach the PokeAPI.co!';
             });
             
 
@@ -186,7 +221,18 @@ var app = new Vue({
             }
         },
         selectPokemon: function (id) {
-            this.selectedPokemon = getPokemonById(id);
+            getPokemonById(id)
+                .then(result => {
+                    this.selectedPokemon = result;
+                })
+                .catch(error => console.error(error));
+        },
+        searchByType: function (searchedType) {
+            getPokemonFromApiByType(this.pokemonListRaw, this.pagingObject.offset, this.pagingObject.itemsPerPage, searchedType)
+                .then(result => {
+                    this.pokemonList = result;
+                })
+                .catch(error => console.error(error));
         }
     }    
 });
