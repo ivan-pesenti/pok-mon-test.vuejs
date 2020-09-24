@@ -23,7 +23,7 @@
             <div id="left-side">
                 <!-- to replace with filter component -->
                 <div id="filter-component">
-                    <form @click.prevent="searchByType(filterObject.selectedType)">
+                    <form @submit.prevent="searchByType(filterObject.selectedType)">
                         <!-- <label for="filterByName">Search by name:</label>
                         <input type="text" name="filterByName" id="filterByName" placeholder="Type the name..."> -->
 
@@ -46,7 +46,7 @@
 
                         <div>
                             <!-- <button class="btn btn-primary" @click="searchByType(filterObject.selectedType)">Search!</button> -->
-                            <button class="btn btn-primary">Search!</button>
+                            <button type="submit" class="btn btn-primary">Search!</button>
                         </div>
                     </form>
                 </div>
@@ -67,7 +67,7 @@
             <!-- to replace with main component -->
             <div id="main-component">
                 <div class="card-container">
-                    <div class="card" v-for="pokemon in pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
+                    <div class="card" v-for="pokemon in displayObject.pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
                         <img :src="pokemon.img" :alt="'image of ' + pokemon.name" class="card-img-top">                    
                         <div class="card-body">
                             <h5 class="card-title">
