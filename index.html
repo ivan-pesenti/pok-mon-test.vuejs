@@ -68,7 +68,7 @@
             <!-- to replace with main component -->
             <div id="main-component">
                 <div class="card-container">
-                    <div class="card" v-for="pokemon in displayObject.pokemonList.slice(pagingObject.offset, pagingObject.itemsPerPage)" :key="pokemon.id" :style="pokemon.backgroundStyles">
+                    <div class="card" v-for="pokemon in displayObject.pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
                         <img :src="pokemon.img" :alt="'image of ' + pokemon.name" class="card-img-top">                    
                         <div class="card-body">
                             <h5 class="card-title">

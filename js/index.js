@@ -114,6 +114,7 @@ var app = new Vue({
     data: {
         pokemonListRaw: [],
         pokemonList: [],
+        pokemonListOrig: [],
         selectedPokemon: null,
         count: 0,
         error: '',
@@ -140,7 +141,8 @@ var app = new Vue({
         loadPokemonFromApi(1)
             .then(response => {               
                 this.pokemonList = response;
-                this.pagingObject.totalPages = Math.round(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
+                this.pokemonListOrig = this.pokemonList;
+                this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
                 this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
             })
             .catch(error => console.error(error));
@@ -181,8 +183,12 @@ var app = new Vue({
             
             this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
 
+            // enable the next and previous buttons
+            this.pagingObject.isNextBtnDisabled = false;
+            this.pagingObject.isPreviousBtnDisabled = false;
+
             // check if we have to disabled the previuos or the next button
-            if ((this.pokemonList.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
+             if ((this.pokemonList.length - this.pagingObject.offset) < this.pagingObject.itemsPerPage) {
                 this.pagingObject.isNextBtnDisabled = true;
             }
 
@@ -195,17 +201,23 @@ var app = new Vue({
         },
         searchByType: function (searchedType) {
 
-            this.displayObject.pokemonList = filterPokemonByType(this.pokemonList, searchedType);
+            this.pokemonList = filterPokemonByType(this.pokemonList, searchedType);
             this.pagingObject.offset = 0;
             this.pagingObject.isPreviousBtnDisabled = true;
-            if (this.displayObject.pokemonList.length <= this.pagingObject.itemsPerPage) {
+            if (this.pokemonList.length <= this.pagingObject.itemsPerPage) {
                 this.pagingObject.totalPages = 1;
                 this.pagingObject.isNextBtnDisabled = true;
             } else {
-                this.pagingObject.totalPages = Math.round(this.displayObject.pokemonList.length / this.pagingObject.itemsPerPage + 1);
+                // console.log('else statement');
+                // console.log(this.pokemonList);
+                this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
+
+                console.log('this.pagingObject.totalPages: ' + this.pagingObject.totalPages);
             }
 
             this.pagingObject.currentPage = 1;
+
+            this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
         }
     }    
 });
