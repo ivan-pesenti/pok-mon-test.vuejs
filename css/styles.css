@@ -131,6 +131,9 @@ h1 {
     flex-flow: row wrap;
     justify-content: center;
     min-height: 600px;
+
+    
+    align-items: center;
 }
 
 /* override bootstrap properties */

@@ -56,6 +56,9 @@
             <!-- to replace with main component -->
             <div id="main-component">
                 <div class="card-container">
+                    <div v-if="isLoading" class="loading-spinner">
+                        <img src="img/Bean Eater-1s-200px.gif" alt="loading spinner">
+                    </div>
                     <div class="card" v-for="pokemon in displayObject.pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
                         <img :src="pokemon.img" :alt="'image of ' + pokemon.name" class="card-img-top">                    
                         <div class="card-body">

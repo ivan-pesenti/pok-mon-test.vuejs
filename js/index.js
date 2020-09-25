@@ -112,6 +112,7 @@ function filterPokemonByType(pokemonList, type) {
 var app = new Vue({
     el: '#app-container',
     data: {
+        isLoading: true,
         pokemonListRaw: [],
         pokemonList: [],
         pokemonListOrig: [],
@@ -144,6 +145,7 @@ var app = new Vue({
                 this.pokemonListOrig = this.pokemonList;
                 this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
                 this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+                this.isLoading = false;
             })
             .catch(error => console.error(error));
 
