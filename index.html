@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="img/pokeball.svg" type="image/x-icon">
 </head>
 <body>        
     <div id="app-container">
@@ -67,7 +68,7 @@
             <!-- to replace with main component -->
             <div id="main-component">
                 <div class="card-container">
-                    <div class="card" v-for="pokemon in displayObject.pokemonList" :key="pokemon.id" :style="pokemon.backgroundStyles">
+                    <div class="card" v-for="pokemon in displayObject.pokemonList.slice(pagingObject.offset, pagingObject.itemsPerPage)" :key="pokemon.id" :style="pokemon.backgroundStyles">
                         <img :src="pokemon.img" :alt="'image of ' + pokemon.name" class="card-img-top">                    
                         <div class="card-body">
                             <h5 class="card-title">
