@@ -15,9 +15,6 @@
     <div id="app-container">
         <!-- to replace with title component -->
         <div id="title-component">
-            <h1>
-                Select your Pokémon!
-            </h1>
         </div>
 
         <div id="main-content">
@@ -25,29 +22,20 @@
                 <!-- to replace with filter component -->
                 <div id="filter-component">
                     <form @submit.prevent="searchByType(filterObject.selectedType)">
-                        <!-- <label for="filterByName">Search by name:</label>
-                        <input type="text" name="filterByName" id="filterByName" placeholder="Type the name..."> -->
 
                         <div>
                             <label for="filterByType"><h3>Search by type:</h3></label>
-                            <!-- <div>
-                                <select name="filterByType" id="filterByType" multiple>
-                                    <option v-for="type in types" value="type">{{type}}</option>
-                                </select>
-                            </div> -->
-
                             <div>
                                 <select v-model="filterObject.selectedType">
-                                    <option value="" disabled>Please select one</option>
-                                    <option v-for="type in filterObject.types" :value="type">{{type}}</option>
-                                    
+                                    <option value="" disabled selected>Please select one</option>
+                                    <option v-for="type in filterObject.types" :value="type">{{type}}</option>                                    
                                 </select>
                             </div>
                         </div>
 
                         <div>
-                            <!-- <button class="btn btn-primary" @click="searchByType(filterObject.selectedType)">Search!</button> -->
-                            <button type="submit" class="btn btn-primary">Search!</button>
+                            <button type="submit" class="btn btn-primary">Search!</button><br>
+                            <button type="reset" class="btn btn-error" @click="clearFilter">Clear filter!</button>
                         </div>
                     </form>
                 </div>
@@ -101,8 +89,7 @@
             </div>
     
             <!-- to replace with image component -->
-            <div id="img-component">
-                <p>img component section</p>
+            <div id="img-component">                
             </div>
         </div>
     </div>

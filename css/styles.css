@@ -7,7 +7,8 @@
 :root {
     --clr-dark: #212121;
     --clr-light: #fafafa;
-    --clr-grey: #757575;  
+    --clr-grey: #757575; 
+    --clr-gold: #FFD700; 
     
     /* pokémon types colors */
     --fire-clr: #F08030;
@@ -34,9 +35,7 @@ body {
     width: 100vw;
     height: auto;
 
-    /* debug */
-    background-color: chartreuse;
-    border: 3px solid white;
+    background-color: var(--clr-grey);
 }
 
 h1 {
@@ -56,25 +55,20 @@ h1 {
 #app-container {   
     display: flexbox;
 
-    /* debug */
-    background-color: aquamarine;
-    border: 3px dotted black;
+    background-color: var(--clr-dark);
 }
 
 #title-component{
     min-height: 100px;
     position: relative;
 
-    /* debug */
-    background-color: yellowgreen;
+    background: url('../img/title.png') no-repeat center center;
+    background-color: var(--clr-grey);
 }
 
 #main-content {
     display: flex;
     flex-flow: row nowrap;
-
-    /* debug */
-    border: 3px dashed red;
 }
 
 #left-side {
@@ -84,12 +78,11 @@ h1 {
     display: flex;
     flex-flow: column nowrap;
 
-    /* debug */
-    background-color: sandybrown;
+    background-color: var(--clr-grey);
 }
 
 #filter-component {
-    min-height: 65%;
+    min-height: 65%;    
 }
 
 #filter-component form {
@@ -98,9 +91,6 @@ h1 {
 
 #selected-item-component {
     min-height: 35%;
-
-    /* debug */
-    background-color: salmon;
 }
 
 #selected-item-component * {
@@ -124,12 +114,16 @@ h1 {
     align-items: center;
 
     /* debug */
-    border: 3px solid whitesmoke;
+    border: 3px solid var(--clr-light);
 }
 
 
 #img-component{
     width: 15%;
+
+    background: url('../img/ash-ketchum.png') no-repeat center center;
+    background-size: cover;
+    background-color: var(--clr-grey);
 }
 
 .card-container {
@@ -169,8 +163,7 @@ h1 {
     background-color: var(--clr-grey);
 }
 
-.card a,
-#filter-component button {
+.card a {
     color: var(--clr-light);
     background-color: var(--clr-grey);
     border: none;
@@ -178,6 +171,8 @@ h1 {
 
 #filter-component button {
     margin-top: 1.5em;
+    background-color: var(--clr-dark);
+    color: var(--clr-light);
 }
 
 .card a:hover {

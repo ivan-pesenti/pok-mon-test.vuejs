@@ -1,5 +1,4 @@
-# implement filter on series of pokémon
-# setup all of the sections in html
+# replace center section with a loading gif during rendering of the items
 # select fonts from Google fonts.
 # select color palette
 # replace div with components of Vue

@@ -200,23 +200,33 @@ var app = new Vue({
             this.selectedPokemon = getPokemonById(this.pokemonList, id)[0];
         },
         searchByType: function (searchedType) {
-
-            this.pokemonList = filterPokemonByType(this.pokemonList, searchedType);
-            this.pagingObject.offset = 0;
-            this.pagingObject.isPreviousBtnDisabled = true;
-            if (this.pokemonList.length <= this.pagingObject.itemsPerPage) {
-                this.pagingObject.totalPages = 1;
-                this.pagingObject.isNextBtnDisabled = true;
-            } else {
-                // console.log('else statement');
-                // console.log(this.pokemonList);
-                this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
-
-                console.log('this.pagingObject.totalPages: ' + this.pagingObject.totalPages);
+            if (searchedType === '') {
+                alert('Please select a type to search for!!!');
             }
-
+            else
+            {
+                this.pokemonList = filterPokemonByType(this.pokemonList, searchedType);
+                this.pagingObject.offset = 0;
+                this.pagingObject.isPreviousBtnDisabled = true;
+                if (this.pokemonList.length <= this.pagingObject.itemsPerPage) {
+                    this.pagingObject.totalPages = 1;
+                    this.pagingObject.isNextBtnDisabled = true;
+                } else {
+                    this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
+    
+                }
+    
+                this.pagingObject.currentPage = 1;
+    
+                this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
+            }
+        },
+        clearFilter: function () {
+            this.pokemonList = this.pokemonListOrig;
+            this.pagingObject.offset = 0;
             this.pagingObject.currentPage = 1;
-
+            this.pagingObject.totalPages = Math.floor(this.pokemonList.length / this.pagingObject.itemsPerPage + 1);
+            this.filterObject.selectedType = '';
             this.displayObject.pokemonList = pagingPokemonList(this.pokemonList, this.pagingObject.offset, this.pagingObject.itemsPerPage);
         }
     }    
