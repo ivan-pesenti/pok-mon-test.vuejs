@@ -1,10 +1,5 @@
-function Pokemon() {
-    this.id = 0;
-    this.name = '';
-    this.img = '';
-    this.types = [];
-    this.backgroundStyles = {};
-}
+// Import section
+import  {Pokemon}  from "./Pokemon.js";
 
 async function loadPokemonFromApi(generarion = 1) {
     var pokemonListRaw = [];
@@ -37,19 +32,21 @@ async function loadPokemonFromApi(generarion = 1) {
             await axios
                     .get(element.url.replace('-species', ''))
                     .then(innerResponse => {
-                        var pokemonToAdd = new Pokemon();
-                        pokemonToAdd.id = innerResponse.data.id;
-                        pokemonToAdd.name = innerResponse.data.name;
-                        pokemonToAdd.img = innerResponse.data.sprites.front_default;
-                        pokemonToAdd.types = innerResponse.data.types.map(obj => {
-                            return obj.type.name;
-                        });
+                        var pokemonToAdd = new Pokemon(
+                            innerResponse.data.id,
+                            innerResponse.data.name,
+                            innerResponse.data.sprites.front_default,
+                            innerResponse.data.types.map(obj => {
+                                return obj.type.name;
+                            }),
+                            formatStyles(innerResponse.data.types)
+                        );
+
+                        // sort types of Pokémon in order to present them everytime in the same way
                         pokemonToAdd.types = pokemonToAdd.types.sort((a, b) => {
                             return (a > b) ? 1 : -1;
-                        });
-    
-                        pokemonToAdd.backgroundStyles = formatStyles(pokemonToAdd.types);
-    
+                        });    
+                        
                         pokemonList.push(pokemonToAdd);
     
                     })
