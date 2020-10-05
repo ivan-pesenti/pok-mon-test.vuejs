@@ -4,7 +4,6 @@ import { getPokemonById, filterPokemonByType, pagingPokemonList } from "./utils.
 
 let clrOne = getComputedStyle(document.documentElement)
 .getPropertyValue('--' + 'grass' + '-clr');
-console.log(clrOne);
 
 var app = new Vue({
     el: '#app-container',

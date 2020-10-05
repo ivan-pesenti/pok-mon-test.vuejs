@@ -34,8 +34,19 @@
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary">Search!</button><br>
-                            <button type="reset" class="btn btn-error" @click="clearFilter">Clear filter!</button>
+                            <div v-if="isLoading">
+                                <button type="submit" disabled>
+                                    <img src="img/Bean Eater-1s-200px.gif" alt="loading spinner" width="40px" class="loading-spinner">
+                                </button>
+                                <br>
+                                <button type="reset" disabled>
+                                    <img src="img/Bean Eater-1s-200px.gif" alt="loading spinner" width="40px" class="loading-spinner">
+                                </button>
+                            </div>
+                            <div v-else>
+                                <button type="submit" class="btn btn-primary">Search!</button><br>
+                                <button type="reset" class="btn btn-error" @click="{(isLoading) ? '' : clearFilter}">Clear filter!</button>
+                            </div>
                         </div>
                     </form>
                 </div>
